@@ -121,3 +121,35 @@ En este proyecto, los dominios `institutional_structure` y `parameterization` co
 
 **Estado actual**
 236 documentos: 50 estables 🟢, 102 en progreso 🟡, 36 pendientes 🔴 — proyecto en fase de diseño avanzada pero activa.
+
+---
+
+# ¿Por qué Parametrización no tiene BPMN?
+
+El módulo de **Parametrización** no requiere un diagrama **BPMN** porque no representa un proceso de negocio.
+
+Su función principal es **administrar configuraciones que utilizan otros módulos del sistema**, como:
+
+- **Catálogos:** definen opciones del sistema.
+- **Detalles de catálogo:** almacenan los valores de cada catálogo.
+- **Parámetros:** almacenan configuraciones generales del sistema.
+
+Por ejemplo:
+
+```text
+Catálogo → Crear / Consultar / Modificar → Guardar configuración
+```
+
+Esto no representa un flujo de negocio con actividades, decisiones, aprobaciones o estados que necesite ser modelado mediante BPMN.
+
+En cambio, un proceso como:
+
+```text
+Solicitud → Validación → Aprobación → Ejecución → Cierre
+```
+
+sí podría requerir un diagrama BPMN porque contiene un flujo de negocio.
+
+## En resumen
+
+> **Parametrización configura el sistema, pero no ejecuta un proceso de negocio; por eso no requiere un diagrama BPMN.**
