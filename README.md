@@ -79,3 +79,49 @@ Dominio (negocio)  →  puede mapearse a  →  Microservicio (despliegue)
 ```
 
 En este proyecto, los dominios `institutional_structure` y `parameterization` conviven hoy dentro de **un solo microservicio** ("reference-data"). No es obligatorio separarlos: solo se dividirían en microservicios distintos si el acoplamiento entre ellos es bajo y la complejidad/escala lo justifica.
+
+---
+
+# design-software-docs — Resumen corto
+
+**Qué es:** repositorio de documentación oficial del proyecto **Horarios SENA** (PRJ-EDU-HORARIOS). Fuente única de verdad documental; no contiene código.
+
+**Problema que resuelve:** hoy los coordinadores académicos del SENA arman horarios de forma manual, sin detectar conflictos de instructores/ambientes/franjas. Meta: crear y publicar un horario válido en < 1 hora, con detección automática de conflictos y visibilidad en tiempo real.
+
+## Arquitectura
+
+- **Microservicios** con DDD + Hexagonal, 1 base de datos PostgreSQL por servicio
+- REST síncrono + eventos asíncronos (broker de mensajes)
+- Auth con JWT (`iam-service`), object storage para documentos, caché Redis
+
+## Servicios (9 + 1 en camino)
+
+| Servicio | Función |
+|---|---|
+| iam-service | Autenticación/autorización |
+| reference-data-service | Catálogos institucionales |
+| academic-management-service | Programas y fichas |
+| training-environment-service | Ambientes físicos |
+| **scheduling-service** | Motor de horarios (núcleo) |
+| actors-service | Instructores, aprendices, empresas |
+| document-service | PDFs y almacenamiento |
+| **monitoring-service** | KPIs y alertas (núcleo) |
+| audit-service | Auditoría append-only |
+| notification-service | Notificaciones (en desarrollo) |
+
+> Hoy solo existen las capas de datos (`*-db`); las APIs aún no están construidas.
+
+## Estructura del repo
+
+17 carpetas numeradas (`00-governance` a `99-archive`): gobierno, contexto, dominio, producto, requisitos, arquitectura/ADRs, datos, API, UML, microservicios, DevOps, calidad, UX/UI, operaciones, training, control de proyecto y archivo.
+
+## Reglas clave
+
+- Nada se sube directo a `dev`/`qa`/`main`: rama + PR + revisión
+- Archivos en `kebab-case.md`; carpetas con prefijo numérico
+- ADRs en `05-architecture/decisions/records/`
+- Prohibido publicar credenciales o datos sensibles
+
+## Estado actual
+
+236 documentos: 50 estables 🟢, 102 en progreso 🟡, 36 pendientes 🔴 — proyecto en fase de diseño avanzada pero activa.
