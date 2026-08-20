@@ -51,3 +51,31 @@ Bizagi Modeler, Camunda Modeler, draw.io, Lucidchart, Signavio
 | Flowchart | Simple, no estandarizado |
 | UML (actividades) | Diseño de software |
 | EPC | Similar a BPMN, usado en SAP/ARIS |
+
+# Dominios del Microservicio de Datos de Referencia
+
+## 1. Dominios del microservicio
+
+| Dominio | Tablas | Responsabilidad |
+|---|---|---|
+| **`institutional_structure`** | `macroregion`, `microregion`, `department`, `municipality`, `training_center`, `institutional_unit` | Jerarquía geográfica/organizacional (macrorregión → microrregión → departamento → municipio → centro de formación → unidad institucional). |
+| **`parameterization`** | `catalog`, `catalog_detail`, `parameter` | Catálogos genéricos, valores parametrizables y configuración del sistema. |
+
+## 2. Diferencia entre microservicio y dominio
+
+| | **Dominio** | **Microservicio** |
+|---|---|---|
+| Naturaleza | Concepto de **negocio** (DDD) | Decisión de **arquitectura/infraestructura** |
+| Qué es | Área de responsabilidad con sus propias entidades y reglas | Proceso independiente, desplegable por separado |
+| Implica | Lenguaje, entidades y lógica cohesivas | API propia, ciclo de vida propio, BD propia (idealmente) |
+| Cardinalidad | Puede vivir dentro de un monolito o de varios servicios | Puede contener uno o varios dominios |
+
+**En corto:** el dominio responde *"¿qué hace esto para el negocio?"*; el microservicio responde *"¿cómo se despliega y ejecuta esto?"*.
+
+## 3. Relación entre ambos
+
+```
+Dominio (negocio)  →  puede mapearse a  →  Microservicio (despliegue)
+```
+
+En este proyecto, los dominios `institutional_structure` y `parameterization` conviven hoy dentro de **un solo microservicio** ("reference-data"). No es obligatorio separarlos: solo se dividirían en microservicios distintos si el acoplamiento entre ellos es bajo y la complejidad/escala lo justifica.
